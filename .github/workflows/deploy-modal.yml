@@ -36,5 +36,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install modal
 
+      - name: Check Modal credentials
+        run: |
+          fail=0
+          check() {  # name, value, expected prefix
+            if [ -z "$2" ]; then echo "::error title=$1::Secret $1 is empty or missing"; fail=1; return; fi
+            case "$2" in "$3"*) ;; *) echo "::error title=$1::$1 should start with $3"; fail=1;; esac
+            case "$2" in *[[:space:]]*) echo "::error title=$1::$1 contains spaces or line breaks"; fail=1;; esac
+            echo "::notice title=$1::format OK (length ${#2})"
+          }
+          check MODAL_TOKEN_ID "$MODAL_TOKEN_ID" "ak-"
+          check MODAL_TOKEN_SECRET "$MODAL_TOKEN_SECRET" "as-"
+          exit $fail
+
       - name: Deploy
-        run: modal deploy modal_app.py
+        run: |
+          set -o pipefail
+          if ! modal deploy modal_app.py 2>&1 | tee deploy.log; then
+            msg=$(tail -n 20 deploy.log | tr -d '\r' | sed 's/%/%25/g' | tr '\n' ' ')
+            echo "::error title=modal deploy failed::${msg}"
+            exit 1
+          fi
