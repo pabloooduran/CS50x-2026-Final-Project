@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionScope | Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="brand">EmotionScope</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/change_password">Change Password</a>
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit" class="nav-link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Analysis Result</h1>
+        <p>
+            Review the processed image and detected facial expressions.
+        </p>
+    </header>
+
+    <main class="result-wrapper">
+        <section class="result-card image-card">
+            <div class="card-header-row">
+                <div>
+                    <h2>Processed Image</h2>
+                    <p class="auth-subtext">Logged in as <strong>{{ username }}</strong></p>
+                </div>
+                <a href="/" class="secondary-link">Analyze another image</a>
+            </div>
+
+            <div class="image-box adaptive-image-box">
+                <img src="/{{ result_image }}" alt="Processed result image">
+            </div>
+        </section>
+
+        <section class="result-card">
+            <h2>Detected Faces</h2>
+
+            {% if detections %}
+                <div class="result-summary">
+                    <div class="summary-pill">
+                        <span class="summary-label">Faces detected</span>
+                        <span class="summary-value">{{ detections|length }}</span>
+                    </div>
+                </div>
+
+                <div class="detections-list">
+                    {% for d in detections %}
+                        <div class="detection-item">
+                            <div class="detection-top">
+                                <span class="face-badge">Face {{ d.face_id }}</span>
+                                <span class="emotion-badge">{{ d.emotion }}</span>
+                            </div>
+
+                            <div class="confidence-row">
+                                <div class="confidence-text">
+                                    Confidence: {{ d.confidence }}
+                                </div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" style="width: {{ (d.confidence * 100)|round(0) }}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="auth-subtext">No face detected.</p>
+            {% endif %}
+        </section>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionScope | Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="topbar">
+        <div class="brand">EmotionScope</div>
+        <div class="nav-links">
+            <a href="/login" class="active">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>EmotionScope</h1>
+        <p>
+            Upload an image and explore facial expression analysis through a clean,
+            intuitive interface designed to make emotion detection simple and visual.
+        </p>
+    </header>
+
+    <main class="auth-wrapper">
+        <section class="auth-card">
+            <h2>Welcome back</h2>
+            <p class="auth-subtext">Sign in to continue using the emotion analyzer.</p>
+
+            {% if error %}
+                <div class="error-box">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" action="/login" class="auth-form">
+                <input name="username" placeholder="Username" required>
+                <input name="password" type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="switch-text">
+                Don’t have an account?
+                <a href="/register">Create one here</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

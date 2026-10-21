@@ -1,0 +1,10 @@
+cs50
+deepface
+Flask
+Flask-Session
+gdown
+opencv-python
+pillow
+tf-keras
+ultralytics
+werkzeug

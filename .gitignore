@@ -1,0 +1,11 @@
+__pycache__/
+flask_session/
+.venv/
+venv/
+
+# Downloaded automatically on first run
+emotion_model.pt
+
+# Generated at runtime
+static/uploads/
+static/results/

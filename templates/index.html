@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionScope | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="brand">EmotionScope</div>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/change_password">Change Password</a>
+            <form action="/logout" method="post" class="logout-form">
+                <button type="submit" class="nav-link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>EmotionScope</h1>
+        <p>
+            Upload an image and explore detected facial expressions through a clean,
+            intuitive interface built for visual emotion analysis.
+        </p>
+    </header>
+
+    <main class="auth-wrapper">
+        <section class="auth-card upload-card">
+            <h2>Welcome back, {{ username }}</h2>
+            <p class="auth-subtext">
+                Upload an image to analyze the expressions of detected faces.
+            </p>
+
+            {% if error %}
+                <div class="error-box">{{ error }}</div>
+            {% endif %}
+
+            <form action="/upload" method="post" enctype="multipart/form-data" class="auth-form" id="upload-form">
+                <label for="image-input" class="upload-dropzone">
+                    <div class="upload-icon">↑</div>
+                    <p class="upload-title">Choose an image</p>
+                    <p class="upload-text">PNG, JPG, JPEG or WEBP</p>
+                    <span class="upload-button-fake">Browse file</span>
+                </label>
+
+                <input id="image-input" type="file" name="image" accept="image/*" required hidden>
+
+                <div id="preview-wrapper" class="preview-wrapper hidden">
+                    <p class="preview-label">Preview</p>
+                    <img id="image-preview" class="image-preview" alt="Selected image preview">
+                    <p id="file-name" class="file-name"></p>
+                </div>
+
+                <button type="submit" id="analyze-btn">Analyze Image</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <h2>Analyzing image...</h2>
+            <p>Please wait while the system detects faces and predicts emotions.</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("upload-form");
+        const button = document.getElementById("analyze-btn");
+        const overlay = document.getElementById("loading-overlay");
+
+        const imageInput = document.getElementById("image-input");
+        const previewWrapper = document.getElementById("preview-wrapper");
+        const previewImage = document.getElementById("image-preview");
+        const fileName = document.getElementById("file-name");
+
+        imageInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) {
+                previewWrapper.classList.add("hidden");
+                previewImage.src = "";
+                fileName.textContent = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewWrapper.classList.remove("hidden");
+                fileName.textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.textContent = "Analyzing...";
+            overlay.classList.remove("hidden");
+        });
+    </script>
+
+</body>
+</html>
