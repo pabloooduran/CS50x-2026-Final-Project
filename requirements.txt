@@ -3,6 +3,7 @@ deepface
 Flask
 Flask-Session
 gdown
+mtcnn
 opencv-python
 pillow
 tf-keras
