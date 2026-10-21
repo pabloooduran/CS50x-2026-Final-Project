@@ -39,7 +39,7 @@ image = (
         ".",
         remote_path=APP_DIR,
         copy=True,
-        ignore=[".git", ".github", "**/__pycache__", "flask_session", "static/uploads", "static/results", "*.ipynb", "notebooks"],
+        ignore=[".git", ".github", "**/__pycache__", "flask_session", "static/uploads", "static/results", "*.ipynb", "notebooks", "*.log"],
     )
     # Bake the model into the image so cold starts don't have to download it
     .run_commands(f"cd {APP_DIR} && gdown {MODEL_ID} -O emotion_model.pt")

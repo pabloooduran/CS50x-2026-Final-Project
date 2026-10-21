@@ -52,8 +52,9 @@ jobs:
       - name: Deploy
         run: |
           set -o pipefail
-          if ! modal deploy modal_app.py 2>&1 | tee deploy.log; then
-            msg=$(tail -n 20 deploy.log | tr -d '\r' | sed 's/%/%25/g' | tr '\n' ' ')
+          log="$RUNNER_TEMP/deploy.log"  # outside the repo, which is uploaded to Modal
+          if ! modal deploy modal_app.py 2>&1 | tee "$log"; then
+            msg=$(tail -n 20 "$log" | tr -d '\r' | sed 's/%/%25/g' | tr '\n' ' ')
             echo "::error title=modal deploy failed::${msg}"
             exit 1
           fi
