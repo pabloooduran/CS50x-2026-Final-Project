@@ -4,6 +4,10 @@ Final project for **[CS50x 2026](https://cs50.harvard.edu/x/2026/)**, Harvard Un
 
 > All code in this repository was written by me, following [CS50's academic honesty policy](https://cs50.harvard.edu/x/2026/honesty/).
 
+**▶ [Live demo](https://pabloooduran--emotionscope-web.modal.run)**: register any username, upload a photo and see the detected faces and emotions.
+
+> The demo runs on [Modal](https://modal.com) and sleeps when nobody is using it, so the first load can take up to a minute while the models load. After that, each image takes a couple of seconds. Accounts and uploads are reset periodically.
+
 EmotionScope is a web-based facial expression analysis application that allows authenticated users to upload an image, detect faces, classify facial expressions, and visualize the results in an intuitive interface.
 
 The system combines a custom-trained emotion classification model with a separate face detection stage, following a modular computer vision pipeline. This design improves robustness by separating **face detection** from **emotion classification**.
