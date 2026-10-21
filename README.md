@@ -97,6 +97,7 @@ image
 ### Face Detection Gate
 - If no face → skip classification
 - Avoids meaningless predictions
+- Weak detections are discarded (detector confidence < 0.90 or face box < 30 px), which removes false positives such as patterns in handwriting
 
 ### Preprocessing
 - Grayscale conversion

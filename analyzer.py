@@ -8,6 +8,11 @@ from deepface import DeepFace
 MODEL_PATH = "emotion_model.pt"
 MODEL_ID = "1XpggsVjk2iuvx8bBA6qVLE6mkPTisHh4"
 
+# Discard weak face detections (e.g. patterns in handwriting mistaken for a face).
+# Real faces typically score > 0.95 with MTCNN.
+MIN_FACE_CONFIDENCE = 0.90
+MIN_FACE_SIZE = 30  # pixels, shortest side of the face box
+
 if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) < 1_000_000:
     print("Downloading emotion model...")
     url = f"https://drive.google.com/uc?id={MODEL_ID}"
@@ -28,6 +33,12 @@ def analyze_image(img_path, output_path):
         )
     except ValueError:
         faces = []
+
+    faces = [
+        f for f in faces
+        if f.get("confidence", 0) >= MIN_FACE_CONFIDENCE
+        and min(f["facial_area"]["w"], f["facial_area"]["h"]) >= MIN_FACE_SIZE
+    ]
 
     if len(faces) == 0:
         cv2.putText(
