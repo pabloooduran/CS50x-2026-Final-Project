@@ -12,6 +12,16 @@ EmotionScope is a web-based facial expression analysis application that allows a
 
 The system combines a custom-trained emotion classification model with a separate face detection stage, following a modular computer vision pipeline. This design improves robustness by separating **face detection** from **emotion classification**.
 
+## Screenshots
+
+**Upload an image**
+
+![Upload screen](docs/screenshots/upload.png)
+
+**Analysis result:** each detected face gets a bounding box, a predicted emotion and a confidence score. Predictions below the confidence threshold are labelled *uncertain* instead of forcing a guess.
+
+![Analysis result with six detected faces](docs/screenshots/result.png)
+
 ---
 
 ## Project Overview
